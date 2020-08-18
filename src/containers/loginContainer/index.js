@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Form, Input, Button, Typography } from "antd"
+import { Form, Input, Button, Typography, Alert } from "antd"
 import { Redirect } from "react-router-dom"
 import { clearError } from "../../actions/errorActions"
 import { login } from "../../actions/authActions"
@@ -19,8 +19,15 @@ class LoginContainer extends Component {
     login({ user: values })
   }
 
+  renderErrors = errors => {
+    return Object.entries(errors)
+      .map(([key, value]) => (
+        <Alert message={`${key} ${value}`} type="error" showIcon="true" closable="true" />
+      ))
+  }
+
   render() {
-    const { loading, authenticated } = this.props
+    const { loading, authenticated, errors } = this.props
 
     if (authenticated) {
       return (
@@ -31,16 +38,19 @@ class LoginContainer extends Component {
     return (
       <div className='login-container'>
         <Title level={2}>Login</Title>
-        {/*        <ErrorMessage
-          errors={errors}
-        />
-*/}        <Form
+
+        {
+          errors && this.renderErrors(errors)
+        }
+
+
+        <Form
           name='login-form'
           layout='vertical'
           onFinish={this.onFinish}
           colon={false}
           hideRequiredMark
-
+          style={{ marginTop: "14px" }}
         >
           <Form.Item
             name='email'

@@ -1,4 +1,5 @@
 import { LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS } from "../constants/authConstants"
+import { setError, clearError } from "../actions/errorActions"
 import { api } from "../utils/apiUtils"
 import { setUserToLocalStorage } from "../utils/authUtils"
 
@@ -7,12 +8,16 @@ export const login = credentials => async dispatch => {
 
   try {
     const { data: { user } } = await api.post('/users/login', credentials)
-    console.log(user)
+
     setUserToLocalStorage(user)
+    dispatch(clearError("login"))
     dispatch(loginSuccess(user))
   } catch (error) {
-    console.log(error)
     dispatch(loginFail())
+
+    if (error.response) {
+      dispatch(setError("login", error.response.data.errors))
+    }
   }
 }
 

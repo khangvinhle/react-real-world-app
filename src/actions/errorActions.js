@@ -1,7 +1,7 @@
 import { CLEAR_ERROR, SET_ERROR } from "../constants/errorConstants"
 
-export const setError = (scope, error) => dispatch => {
-  dispatch({ type: SET_ERROR, payload: { scope, error } })
+export const setError = (scope, errors) => dispatch => {
+  dispatch({ type: SET_ERROR, payload: { scope, errors } })
 }
 
 export const clearError = scope => dispatch => {

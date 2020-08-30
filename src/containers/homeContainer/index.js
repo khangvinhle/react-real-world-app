@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Layout, Typography, Divider, Row, Col } from "antd"
+import { Layout, Row, Col, Tabs } from "antd"
+
+import GlobalFeedContainer from "./globalFeedContainer"
+import YourFeedContainer from "./yourFeedContainer"
 
 const { Footer, Header, Content } = Layout
-const { Title } = Typography
+const { TabPane } = Tabs
 
 class HomeContainer extends Component {
   render() {
@@ -17,60 +20,19 @@ class HomeContainer extends Component {
           </div>
         </Header>
 
-        <Content>
+        <Content style={{margin: "auto 1em"}}>
           <Row>
-            <Col span={12}>
-              <div className="article">
-                <Title level={4}>
-                  article 1
-            </Title>
-                <p>loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem</p>
-              </div>
-
-              <Divider />
-              <div className="article">
-                <Title level={4}>
-                  article 1
-            </Title>
-                <p>loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem</p>
-              </div>
-
-              <Divider />
-              <div className="article">
-                <Title level={4}>
-                  article 1
-            </Title>
-                <p>loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem</p>
-              </div>
-
-              <Divider />
-              <div className="article">
-                <Title level={4}>
-                  article 1
-            </Title>
-                <p>loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem</p>
-              </div>
-
-              <Divider />
-              <div className="article">
-                <Title level={4}>
-                  article 1
-            </Title>
-                <p>loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem</p>
-              </div>
-
-              <Divider />
-              <div className="article">
-                <Title level={4}>
-                  article 1
-            </Title>
-                <p>loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem</p>
-              </div>
-
-              <Divider />
-
+            <Col span={15}>
+              <Tabs defaultActiveKey="1">
+                <TabPane key="1" tab="Your Feed">
+                  <YourFeedContainer />
+                </TabPane>
+                <TabPane key="2" tab="Global Feed">
+                  <GlobalFeedContainer />
+                </TabPane>
+              </Tabs>
             </Col>
-            <Col span={12}></Col>
+            <Col span={4}></Col>
           </Row>
         </Content>
 

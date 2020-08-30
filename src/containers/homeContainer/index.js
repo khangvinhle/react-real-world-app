@@ -4,6 +4,8 @@ import { Layout, Row, Col, Tabs } from "antd"
 import GlobalFeedContainer from "./globalFeedContainer"
 import YourFeedContainer from "./yourFeedContainer"
 
+import "./index.css"
+
 const { Footer, Header, Content } = Layout
 const { TabPane } = Tabs
 
@@ -20,9 +22,9 @@ class HomeContainer extends Component {
           </div>
         </Header>
 
-        <Content style={{margin: "auto 1em"}}>
+        <Content style={{ margin: "1em" }}>
           <Row>
-            <Col span={15}>
+            <Col span={15} style={{ borderRight: "1px solid #0000003b", padding: "1em" }}>
               <Tabs defaultActiveKey="1">
                 <TabPane key="1" tab="Your Feed">
                   <YourFeedContainer />
@@ -32,11 +34,11 @@ class HomeContainer extends Component {
                 </TabPane>
               </Tabs>
             </Col>
-            <Col span={4}></Col>
+            <Col span={9} style={{ borderLeft: "1px solid #0000003b", padding: "1em" }}> Tags </Col>
           </Row>
         </Content>
 
-        <Footer style={{ backgroundColor: "#325F74", textAlign: "center" }}>
+        <Footer style={{ backgroundColor: "#325F74", textAlign: "center", marginTop: "0.5em" }}>
           <a href="https://www.yubico.com/products/" target="blank" style={{ textDecoration: "none", color: "yellowgreen" }}>
             See out products now!
           </a>

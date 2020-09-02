@@ -1,18 +1,8 @@
-import React, { Component } from "react"
-import { List, Space } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
-
-const listData = [];
-for (let i = 0; i < 20; i++) {
-  listData.push({
-    href: 'https://ant.design',
-    title: `ant design part ${i}`,
-    description:
-      'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-      'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { List, Space } from "antd";
+import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
+import { fetchArticles } from "../../../actions/articleActions";
 
 const IconText = ({ icon, text }) => (
   <Space>
@@ -22,39 +12,82 @@ const IconText = ({ icon, text }) => (
 );
 
 class YourFeedContainer extends Component {
+  componentDidMount() {
+    const { fetchArticles, limit, offset } = this.props;
+    fetchArticles({ limit, offset });
+  }
+
   render() {
+    const {
+      articles,
+      loading,
+      limit,
+      articlesCount,
+      fetchArticles,
+    } = this.props;
+
     return (
-      <div className="globalFeedContainer" >
-      <List
-      itemLayout="vertical"
-      size="large"
-      pagination={{
-        onChange: page => {
-          console.log(page);
-        },
-        pageSize: 3,
-      }}
-      dataSource={listData}
-      renderItem={item => (
-        <List.Item
-          key={item.title}
-          actions={[
-            <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-            <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-            <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-          ]}
-        >
-          <List.Item.Meta
-            title={<a href={item.href}>{item.title}</a>}
-            description={item.description}
-          />
-          {item.content}
-        </List.Item>
-      )}
-    />
+      <div className="globalFeedContainer">
+        <List
+          loading={loading}
+          itemLayout="vertical"
+          size="large"
+          pagination={{
+            onChange: (pageNumber, pageSize) => {
+              console.log(`page number: ${pageNumber}`);
+              console.log(`page size: ${pageSize}`);
+              fetchArticles({ limit, offset: (pageNumber - 1) * limit });
+            },
+            defaultPageSize: limit,
+            total: articlesCount,
+          }}
+          dataSource={articles}
+          renderItem={(item) => (
+            <List.Item
+              key={item.title}
+              actions={[
+                <IconText
+                  icon={StarOutlined}
+                  text="156"
+                  key="list-vertical-star-o"
+                />,
+                <IconText
+                  icon={LikeOutlined}
+                  text="156"
+                  key="list-vertical-like-o"
+                />,
+                <IconText
+                  icon={MessageOutlined}
+                  text="2"
+                  key="list-vertical-message"
+                />,
+              ]}
+            >
+              <List.Item.Meta
+                title={<a href={item.href}>{item.title}</a>}
+                description={item.description}
+              />
+              {item.content}
+            </List.Item>
+          )}
+        />
       </div>
-    )
+    );
   }
 }
 
-export default YourFeedContainer
+const mapStateToProps = ({ article }) => {
+  return {
+    limit: article.limit,
+    offset: article.offset,
+    articlesCount: article.articlesCount,
+    loading: article.loading,
+    articles: article.articles,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchArticles,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(YourFeedContainer);

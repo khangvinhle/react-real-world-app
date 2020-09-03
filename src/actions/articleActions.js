@@ -5,7 +5,6 @@ import {
 } from "../constants/articleConstants";
 
 import { api } from "../utils/apiUtils";
-import { getUserFromLocalStorage } from "../utils/authUtils";
 
 export const fetchArticles = (params) => async (dispatch) => {
   dispatch(fetchRequest());
@@ -14,7 +13,7 @@ export const fetchArticles = (params) => async (dispatch) => {
     const {
       data: { articles, articlesCount },
     } = await api.get("/articles", {
-      params: { ...params, author: getUserFromLocalStorage().username },
+      params: { ...params },
     });
     dispatch(loginSuccess({ articles, articlesCount }));
   } catch (error) {

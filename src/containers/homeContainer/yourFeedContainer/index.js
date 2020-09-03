@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { List, Space } from "antd";
 import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
 import { fetchArticles } from "../../../actions/articleActions";
+import { getUserFromLocalStorage } from "../../../utils/authUtils";
 
 const IconText = ({ icon, text }) => (
   <Space>
@@ -14,7 +15,11 @@ const IconText = ({ icon, text }) => (
 class YourFeedContainer extends Component {
   componentDidMount() {
     const { fetchArticles, limit, offset } = this.props;
-    fetchArticles({ limit, offset });
+    fetchArticles({
+      limit,
+      offset,
+      author: getUserFromLocalStorage().username,
+    });
   }
 
   render() {
@@ -27,16 +32,18 @@ class YourFeedContainer extends Component {
     } = this.props;
 
     return (
-      <div className="globalFeedContainer">
+      <div className="yourFeedContainer">
         <List
           loading={loading}
           itemLayout="vertical"
           size="large"
           pagination={{
             onChange: (pageNumber, pageSize) => {
-              console.log(`page number: ${pageNumber}`);
-              console.log(`page size: ${pageSize}`);
-              fetchArticles({ limit, offset: (pageNumber - 1) * limit });
+              fetchArticles({
+                limit,
+                offset: (pageNumber - 1) * limit,
+                author: getUserFromLocalStorage().username,
+              });
             },
             defaultPageSize: limit,
             total: articlesCount,
